@@ -1,5 +1,14 @@
 package com.springSecurity.SpringSecurity.config;
 
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
+
+import com.springSecurity.SpringSecurity.model.Token;
+import com.springSecurity.SpringSecurity.repository.TokenRepository;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Configuration
 public class CustomLogoutHandler implements LogoutHandler {
