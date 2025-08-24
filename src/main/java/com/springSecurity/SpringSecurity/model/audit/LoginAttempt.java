@@ -1,8 +1,8 @@
-package com.springSecurity.SpringSecurity.model;
+package com.springSecurity.SpringSecurity.model.audit;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 
+import com.springSecurity.SpringSecurity.model.User;
 import com.springSecurity.SpringSecurity.model.Enum.AttemptStatus;
 
 import jakarta.persistence.*;

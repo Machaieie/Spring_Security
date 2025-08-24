@@ -1,4 +1,4 @@
-package com.springSecurity.SpringSecurity.model;
+package com.springSecurity.SpringSecurity.model.audit;
 
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;

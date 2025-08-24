@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.springSecurity.SpringSecurity.model.Enum.Role;
 import com.springSecurity.SpringSecurity.model.Enum.UserState;
+import com.springSecurity.SpringSecurity.model.audit.CryptoConverter;
 
 import jakarta.persistence.*;
 import lombok.Getter;
