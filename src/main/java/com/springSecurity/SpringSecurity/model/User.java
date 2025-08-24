@@ -17,7 +17,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-@Entity @Table(name = "users")
+@Entity @Table(name = "users",
+  indexes = {
+    @Index(name = "idx_users_email_hash", columnList = "emailHash", unique = true),
+    @Index(name = "idx_users_username", columnList = "username", unique = true)
+  }
+)
 public class User implements UserDetails {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,11 +32,14 @@ public class User implements UserDetails {
     private String username;
 
     @Column(nullable=false)
-    private String password; 
+    private String password;
 
-    @Convert(converter = CryptoConverter.class) 
+    @Convert(converter = CryptoConverter.class)
     @Column(nullable=false, length=320)
-    private String email;
+    private String email; 
+
+    @Column(nullable=false, length=64, unique=true)
+    private String emailHash;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable=false, length=20)
