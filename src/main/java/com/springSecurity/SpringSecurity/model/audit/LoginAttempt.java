@@ -12,8 +12,7 @@ import lombok.*;
 @Setter
 @Entity
 @Table(name = "login_attempts", indexes = {
-        @Index(name = "idx_login_attempt_ts", columnList = "timestamp"),
-        @Index(name = "idx_login_attempt_username", columnList = "username")
+        @Index(name = "idx_login_attempt_ts", columnList = "attemptedAt")
 })
 public class LoginAttempt {
     @Id

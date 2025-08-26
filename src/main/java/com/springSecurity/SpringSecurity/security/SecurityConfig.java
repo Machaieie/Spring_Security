@@ -19,6 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.springSecurity.SpringSecurity.config.CustomLogoutHandler;
 import com.springSecurity.SpringSecurity.filter.JwtAuthenticationFilter;
+import com.springSecurity.SpringSecurity.service.JwtService;
 import com.springSecurity.SpringSecurity.service.UserDetailsServiceImp;
 
 @Configuration
@@ -26,25 +27,30 @@ import com.springSecurity.SpringSecurity.service.UserDetailsServiceImp;
 public class SecurityConfig {
 
         private final UserDetailsServiceImp userDetailsServiceImp;
-        private final JwtAuthenticationFilter jwtAuthenticationFilter;
         private final CustomLogoutHandler logoutHandler;
+        private final JwtService jwtService;
 
         public SecurityConfig(UserDetailsServiceImp userDetailsServiceImp,
-                        JwtAuthenticationFilter jwtAuthenticationFilter,
-                        CustomLogoutHandler logoutHandler) {
+                        CustomLogoutHandler logoutHandler,
+                        JwtService jwtService) {
                 this.userDetailsServiceImp = userDetailsServiceImp;
-                this.jwtAuthenticationFilter = jwtAuthenticationFilter;
                 this.logoutHandler = logoutHandler;
+                this.jwtService = jwtService;
         }
 
         @Bean
-        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        public JwtAuthenticationFilter jwtAuthenticationFilter() {
+                return new JwtAuthenticationFilter(jwtService, userDetailsServiceImp);
+        }
+
+        @Bean
+        public SecurityFilterChain securityFilterChain(HttpSecurity http,
+                        JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception {
                 return http
                                 .csrf(AbstractHttpConfigurer::disable)
                                 .authorizeHttpRequests(req -> req
                                                 .requestMatchers(HttpMethod.POST, "/api/auth/register").permitAll()
                                                 .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
-
                                                 .anyRequest().authenticated())
                                 .userDetailsService(userDetailsServiceImp)
                                 .sessionManagement(session -> session
@@ -54,8 +60,7 @@ public class SecurityConfig {
                                                 .accessDeniedHandler((request, response, ex) -> response.setStatus(403))
                                                 .authenticationEntryPoint(
                                                                 new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
-                                .logout(l -> l
-                                                .logoutUrl("/logout")
+                                .logout(l -> l.logoutUrl("/logout")
                                                 .addLogoutHandler(logoutHandler)
                                                 .logoutSuccessHandler((request, response, auth) -> SecurityContextHolder
                                                                 .clearContext()))

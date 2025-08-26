@@ -1,5 +1,6 @@
 package com.springSecurity.SpringSecurity.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -10,7 +11,8 @@ import com.springSecurity.SpringSecurity.repository.UserRepository;
 @Service
 public class UserDetailsServiceImp implements UserDetailsService {
 
-    private final UserRepository repository;
+    @Autowired
+    private  UserRepository repository;
 
     public UserDetailsServiceImp(UserRepository repository) {
         this.repository = repository;
